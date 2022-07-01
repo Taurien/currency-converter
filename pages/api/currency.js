@@ -1,7 +1,8 @@
 import axios from "axios"
 
 export default async function handler(req, res) {
-  try {
+   try {
+    // const localCurrency = await axios.get('https://ipapi.co/currency/')
     const latestCurrency = await axios.get(`https://openexchangerates.org/api/latest.json?app_id=${process.env.OPEN_EXCHANGES_KEY}`)
     const allCurrencies = await axios.get(`https://openexchangerates.org/api/currencies.json`)
 
@@ -15,15 +16,17 @@ export default async function handler(req, res) {
       })
     )
 
+    // const local = formatedCurrencies.find(e => e.value === localCurrency.data)
+
     const result = {
         base: latestCurrency.data.base,
-        
+        // localCurrency: local,
         currencies: formatedCurrencies,
         rates: latestCurrency.data.rates
     }
 
     return res.status(200).json(result)
   } catch (err) {
-    return res.status(404).json({error: err})
+    return res.status(404).json({ error: err })
   }
 }

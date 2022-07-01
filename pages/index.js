@@ -20,6 +20,9 @@ export default function Home(props) {
   const [ selectedTime, setSelectedTime ] = useState('W')
   
   useEffect(() => {
+    // const localCurrency = await axios.get('https://ipapi.co/currency/')
+    // const local = currency.data.currencies.find(e => e.value === localCurrency.data)
+    // console.log(local)
     setAllCurrencies(props.currencies)
     setCurrencyRates(props.rates)
     setSecondCurrency(props.localCurrency)
@@ -115,37 +118,34 @@ export default function Home(props) {
     }
 
   return (
-    <ContainerBlock className=' overflow-y-auto'>
-
+    <ContainerBlock className='relative overflow-y-auto'>
       <CurrencyMarquee currencies={allCurrencies} actualCurrency={firstCurrency.value}/>
 
-      <div className='max-w-sm mx-auto mt-6'>
-        <h1>Money Exchange</h1>
-        <div className='flex flex-col mx-4 p-4 bg-slate-500 rounded-md shadow-md'>
+      <div className='max-w-sm mx-auto mt-4'>
+        <div className='flex flex-col mx-4 p-4 bg-slate-500 bg-opacity-50 rounded-lg shadow-md'>
+          <h1 className=' w-full text-3xl text-center font-bold mb-4' >Money Exchange</h1>
           <input type="number" className="w-full rounded-sm px-3 py-1" min={1} value={amount} onChange={(e) => handleChangeAmount(e)} />
-          {/* <div className=''> */}
-            <CurrencyInput
-              name={'first-Currency'}
-              currencies={allCurrencies} 
-              selectedCurrency={firstCurrency}
-              handleChange={(event, action) => handleCurrencyChange(event,action)}
-            />
-            <div className='w-full inline-flex my-2 bg-white rounded-sm'>
-              <div className=' w-full flex flex-col px-3 py-1 border-r'>
-                <span className=' font-bold'>Equals</span>
-                <span className='w-full'>{convertedAmount || '0.00'} <b>{secondCurrency?.value || ''}</b></span>
-              </div>
-              <span className='aspect-square text-3xl text-center bg-white outline-none rounded-sm'>💱</span>
-            </div>
+          <CurrencyInput
+            name={'first-Currency'}
+            currencies={allCurrencies} 
+            selectedCurrency={firstCurrency}
+            handleChange={(event, action) => handleCurrencyChange(event,action)}
+          />
 
-            <CurrencyInput
-              name={'second-Currency'}
-              currencies={allCurrencies} 
-              selectedCurrency={secondCurrency}
-              handleChange={(event, action) => handleCurrencyChange(event,action)}
-            />
-          {/* </div> */}
-          
+          <div className='w-full inline-flex my-2 bg-white rounded'>
+            <div className=' w-full flex flex-col px-3 py-1 border-r'>
+              <p className=' font-bold'>Equals</p>
+              <p className='w-full'>{convertedAmount || '0.00'} <b>{secondCurrency?.value || ''}</b></p>
+            </div>
+            <div className=' flex items-center text-center'><span className='text-3xl'>💱</span></div>
+          </div>
+
+          <CurrencyInput
+            name={'second-Currency'}
+            currencies={allCurrencies} 
+            selectedCurrency={secondCurrency}
+            handleChange={(event, action) => handleCurrencyChange(event,action)}
+          />
 
           {
             !chart &&
@@ -157,21 +157,26 @@ export default function Home(props) {
       {
         currencyTimeSeries && chart &&
         <div className='max-w-xl mx-auto mt-3'>
-          <div className='w-full inline-flex items-center justify-center'>
-            <button className=' bg-orange-400 w-8 border' onClick={() => timeSerieHandler('W')}>W</button>
-            <button className=' bg-orange-400 w-8 border' onClick={() => timeSerieHandler('M')}>M</button>
-            <button className=' bg-orange-400 w-8 border' onClick={() => timeSerieHandler('Y')}>Y</button>
-          </div>
-          <div className="mx-4 max-h-96">
-            {
-              currencyTimeSeries[selectedTime] &&
-              <CurrencyChart timeSeries={currencyTimeSeries[selectedTime]} baseCurrency={firstCurrency.value} finalCurrency={secondCurrency.value}/>
-            }
-          </div>
+          <div className='flex flex-col p-2 mx-4 bg-slate-500 bg-opacity-50 rounded-lg'>
           
+            <div className='w-36 self-center inline-flex items-center justify-between font-bold rounded-full overflow-hidden mb-1'>
+              <button className='px-4 py-1 bg-slate-300' onClick={() => timeSerieHandler('W')}>W</button>
+              <button className='px-4 py-1 bg-slate-300' onClick={() => timeSerieHandler('M')}>M</button>
+              <button className='px-4 py-1 bg-slate-300' onClick={() => timeSerieHandler('Y')}>Y</button>
+            </div>
+
+            <div className="max-h-96 bg-white rounded">
+              {
+                currencyTimeSeries[selectedTime] &&
+                <CurrencyChart timeSeries={currencyTimeSeries[selectedTime]} baseCurrency={firstCurrency.value} finalCurrency={secondCurrency.value}/>
+              }
+            </div>
+
+          </div>
         </div>
       }
 
+      <div className='absolute top-0 left-0 bg w-full h-full -z-10 bg-world-dots bg-photo bg-cover bg-no-repeat bg-origin-border'></div>
     </ContainerBlock>
   )
 }

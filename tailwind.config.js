@@ -16,6 +16,9 @@ module.exports = {
       fontFamily: {
         'work_sans': ['Work Sans', 'sans-serif'],
       },
+      backgroundImage: {
+        'world-dots': "url('~/public/world-dots.svg')",
+      },
     },
   },
   plugins: [],
