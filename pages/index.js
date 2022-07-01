@@ -6,10 +6,8 @@ import CurrencyMarquee from '../components/CurrencyMarquee'
 import CurrencyInput from '../components/CurrencyInput'
 import ContainerBlock from './ContainerBlock'
 import CurrencyChart from '../components/CurrencyChart'
-// import { dateAsString } from '../utils/dates'
 
-export default function Home() {
-
+export default function Home(props) {
   const [ allCurrencies, setAllCurrencies ] = useState(null)
   const [ currencyRates, setCurrencyRates ] = useState()
   const [ firstCurrency, setFirstCurrency ] = useState({value: 'USD', label: 'United States Dollar'})
@@ -21,16 +19,10 @@ export default function Home() {
   const [ chart, setChart ] = useState(false)
   const [ selectedTime, setSelectedTime ] = useState('W')
   
-
-  const firstData = async () => {
-    const { data } = await axios.get('/api/currency')
-    setAllCurrencies(data.currencies)
-    setCurrencyRates(data.rates)
-    setSecondCurrency(data.localCurrency)
-  }
-
   useEffect(() => {
-    firstData()
+    setAllCurrencies(props.currencies)
+    setCurrencyRates(props.rates)
+    setSecondCurrency(props.localCurrency)
   }, [])
 
   const handleChangeAmount = (e, x) => {
@@ -182,4 +174,14 @@ export default function Home() {
 
     </ContainerBlock>
   )
+}
+
+export async function getServerSideProps() {
+  const currency = await axios.get('https://currency-converter-two-nu.vercel.app/api/currency')
+  const localCurrency = await axios.get('https://ipapi.co/currency/')
+  const local = currency.data.currencies.find(e => e.value === localCurrency.data)
+
+  const res = {...currency.data, localCurrency: local }
+
+  return { props: res }
 }
