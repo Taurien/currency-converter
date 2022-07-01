@@ -117,6 +117,12 @@ export default function Home(props) {
         setChart(true)
     }
 
+    const trasladeCurrency = () => {
+      setFirstCurrency(secondCurrency)
+      fetchNewCurrency(secondCurrency.value)
+      setSecondCurrency(firstCurrency)
+    }
+
   return (
     <ContainerBlock className='relative overflow-y-auto'>
       <CurrencyMarquee currencies={allCurrencies} actualCurrency={firstCurrency.value}/>
@@ -137,7 +143,7 @@ export default function Home(props) {
               <p className=' font-bold'>Equals</p>
               <p className='w-full'>{convertedAmount || '0.00'} <b>{secondCurrency?.value || ''}</b></p>
             </div>
-            <div className=' flex items-center text-center'><span className='text-3xl'>💱</span></div>
+            <button onClick={() => trasladeCurrency()} className='text-3xl text-center bg-white outline-none rounded-sm'>💱</button>
           </div>
 
           <CurrencyInput
