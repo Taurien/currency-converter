@@ -1,27 +1,10 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { useInnerHeight } from '../hooks/innerHeight'
 
 
 const ContainerBlock = ({ children, customMeta, ...props }) => {
 
   const innerHeight = useInnerHeight()
-
-  const router = useRouter()
-
-  useEffect(() => {
-
-    const handleRouteChange = url => console.log(url)
-
-    router.events.on('routeChangeStart', handleRouteChange)
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange)
-    }
-  }, [])
 
   const meta = {
     title: 'MC-Currency',
@@ -44,17 +27,8 @@ const ContainerBlock = ({ children, customMeta, ...props }) => {
         <meta name="keywords" content="michel,cruz,michel cruz,taurien,portfolio,web,ux,ui,graphic,design,graphic design,designer,developer,web developer,frontend,backend,front-end,back-end,fullstack,full-stack,javascript,freelance"/>
 
         {/* Open Graph */}
-        <meta
-          property='og:url'
-          content={`https://michelcruz.me${router.asPath}`}
-        />
-        <link
-          rel='canonical'
-          href={`https://michelcruz.me${router.asPath}`}
-        />
         <meta property='og:type' content={meta.type} />
         <meta property='og:title' content={meta.title} />
-        <meta property='og:site_name' content='Michel Cruz' />
         <meta property='og:description' content={meta.description} />
       </Head>
       
