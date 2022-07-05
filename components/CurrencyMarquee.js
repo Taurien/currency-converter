@@ -20,7 +20,7 @@ const CurrencyMarquee = ({ currencies, actualCurrency }) => {
     return (
         <Marquee className='w-full h-16 grid grid-rows-1 grid-flow-col bg-white shadow-md'
             play={true}
-            pauseOnHover={true}
+            // pauseOnHover={true}
             direction='left'
             speed={20}
             gradient={false}
