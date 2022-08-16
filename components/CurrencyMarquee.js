@@ -1,7 +1,13 @@
-import { LeapFrog } from "@uiball/loaders"
+import { useContext } from "react"
 import Marquee from "react-fast-marquee"
+import { LeapFrog } from "@uiball/loaders"
+
+import CurrencyContext from "../context/CurrencyContext"
+
 
 const CurrencyMarquee = ({ currencies, actualCurrency }) => {
+
+    const { dollarUSLocale } = useContext(CurrencyContext)
 
     const MarqueeItems = () => currencies.map(item => {
         const rate = item.rate?.toFixed(2)
@@ -12,7 +18,7 @@ const CurrencyMarquee = ({ currencies, actualCurrency }) => {
                     <p className='mr-2 font-bold'>{item.value}</p>
                     <span className={`currency-flag currency-flag-${item.value.toLowerCase()}`} />
                 </div>
-                <p>{rate} / <b>{actualCurrency}</b></p>
+                <p>{dollarUSLocale.format(rate)} / <b>{actualCurrency}</b></p>
             </div>
         )
     })
